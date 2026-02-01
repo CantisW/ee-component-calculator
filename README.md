@@ -14,6 +14,10 @@ This calculator supports calculations for:
 - Resistor Color Band Codes (3, 4, 5, and 6)
 - SMD Resistor EIA codes (EIA 3- and 4-digit, as well as EIA-96)
 
+# BUILD
+
+You can build this project using [PyInstaller](https://pyinstaller.org/en/stable/installation.html#pyinstaller-not-in-path). From there, you can add it to PATH or whatever is needed on your system to run this from CLI.
+
 # ISSUES
 
 Please open an issue! I'll try to be responsive (maybe...)
