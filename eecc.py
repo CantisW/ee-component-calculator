@@ -143,6 +143,20 @@ def colors_to_value(input, len):
         output += str((color_to_value_map[color]))
     return int(output)
 
+def value_to_str(input, multiplier):
+    """
+    Given a value and multiplier, gets the string (value with units).
+    """
+    num = input * 10**color_to_value_map[multiplier]
+    if num >= 1000000:
+        return f"{num/1000000} MΩ"
+    elif num >= 1000:
+        return f"{num/1000} kΩ"
+    elif num >= 0:
+        return f"{num} Ω"
+    elif num >= 0.001:
+        return f"{num*1000} mΩ"
+
 def calculate():
     string = input("input: ")
     tokens = string.split(" ")
@@ -199,10 +213,10 @@ def calculate():
     final = list_of_colors[-1]
     if len(to_calculate) == 3:
         value = colors_to_value(list_of_colors, 2)
-        return f"{value * 10**color_to_value_map[final]}"
+        return f"{value_to_str(value, final)}"
     elif len(to_calculate) == 6:
         value = colors_to_value(list_of_colors, 3)
-        return f"{value * 10**color_to_value_map[third]} with tolerance of {color_to_tolerance_map[penultimate]}, {color_to_ppm_map[final]}"
+        return f"{value_to_str(value, third)}, tolerance {color_to_tolerance_map[penultimate]}, {color_to_ppm_map[final]}"
 
     elif len(to_calculate) == 4:
         # we have a 4 band
@@ -214,7 +228,7 @@ def calculate():
         value = colors_to_value(list_of_colors, 3)
         if final not in color_to_tolerance_map:
             return "invalid final tolerance color."
-    return f"{value * 10**color_to_value_map[penultimate]} with tolerance of {color_to_tolerance_map[final]}"
+    return f"{value_to_str(value, penultimate)}, tolerance {color_to_tolerance_map[final]}"
         
     
 
