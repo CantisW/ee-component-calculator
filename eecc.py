@@ -144,7 +144,7 @@ def colors_to_value(input, len):
     return int(output)
 
 def calculate():
-    string = input("please type what you'd like to calculate: ")
+    string = input("input: ")
     tokens = string.split(" ")
     if len(tokens) < 2:
         return "invalid number of arguments. must be at least 2."
@@ -253,3 +253,4 @@ if __name__ == "__main__":
 
     while True:
         print(calculate())
+        print("\n")
