@@ -143,11 +143,14 @@ def colors_to_value(input, len):
         output += str((color_to_value_map[color]))
     return int(output)
 
-def value_to_str(input, multiplier):
+def value_to_str(input, multiplier, exponentiate=True):
     """
     Given a value and multiplier, gets the string (value with units).
     """
-    num = input * 10**color_to_value_map[multiplier]
+    if exponentiate:
+        num = input * 10**color_to_value_map[multiplier]
+    else:
+        num = input * multiplier
     if num >= 1000000:
         return f"{num/1000000} MΩ"
     elif num >= 1000:
@@ -181,14 +184,14 @@ def calculate():
                     if not validate_input(to_calculate[0], 2):
                         return "invalid types."
                     index = digits[0] + digits[1]
-                    return EIA96_index[index] * EIA96_mult[digits[-1]]
+                    return value_to_str(EIA96_index[index], EIA96_mult[digits[-1]], False)
                 # else just assume regular EIA
                 if not validate_input(to_calculate[0]):
                     return "invalid types."
                 value = digits[0] + digits[1]
             else:
                 value = digits[0] + digits[1] + digits[2]
-            return int(value) * 10**int(digits[-1])
+            return value_to_str(value, digits[-1])
         else:
             if len(digits) < 3:
                 return to_calculate[0] + " pF"
