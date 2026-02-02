@@ -143,14 +143,18 @@ def colors_to_value(input, len):
         output += str((color_to_value_map[color]))
     return int(output)
 
-def value_to_str(input, multiplier, exponentiate=True):
+def value_to_str(input, multiplier, exponentiate=True, color=True):
     """
     Given a value and multiplier, gets the string (value with units).
     """
-    if exponentiate:
-        num = input * 10**color_to_value_map[multiplier]
+    if not color and exponentiate:
+        num = num = int(input) * 10**int(multiplier)
+    elif exponentiate:
+        num = int(input) * 10**color_to_value_map[multiplier]
     else:
-        num = input * multiplier
+        num = int(input) * int(multiplier)
+    print(f"debug: {input} {multiplier}")
+
     if num >= 1000000:
         return f"{num/1000000} MΩ"
     elif num >= 1000:
@@ -184,14 +188,14 @@ def calculate():
                     if not validate_input(to_calculate[0], 2):
                         return "invalid types."
                     index = digits[0] + digits[1]
-                    return value_to_str(EIA96_index[index], EIA96_mult[digits[-1]], False)
+                    return value_to_str(EIA96_index[index], EIA96_mult[digits[-1]], False, False)
                 # else just assume regular EIA
                 if not validate_input(to_calculate[0]):
                     return "invalid types."
                 value = digits[0] + digits[1]
             else:
                 value = digits[0] + digits[1] + digits[2]
-            return value_to_str(value, digits[-1])
+            return value_to_str(value, digits[-1], True, False)
         else:
             if len(digits) < 3:
                 return to_calculate[0] + " pF"
@@ -214,6 +218,8 @@ def calculate():
     third = list_of_colors[-3]
     penultimate = list_of_colors[-2]
     final = list_of_colors[-1]
+    if len(to_calculate) > 6:
+        return "too long of a color code."
     if len(to_calculate) == 3:
         value = colors_to_value(list_of_colors, 2)
         return f"{value_to_str(value, final)}"
